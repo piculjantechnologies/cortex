@@ -1,0 +1,25 @@
+.cortex-footer {
+  width: 100%;
+  padding: 20px;
+  border-top: 1px solid var(--cx-border);
+  color: var(--cx-text-subtle);
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.cortex-footer-link {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--cx-text-muted);
+  text-decoration: none;
+  transition: color 0.15s ease;
+}
+
+.cortex-footer-link:hover {
+  color: var(--cx-text);
+  text-decoration: underline;
+}
+
+.cortex-footer p {
+  margin: 0;
+}

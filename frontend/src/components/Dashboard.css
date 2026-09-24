@@ -1,0 +1,916 @@
+/* Every rule is scoped to the dashboard's root element (.cortex-dashboard). */
+
+/* Page layout: top bar, content grows, footer stays at the bottom */
+.cortex-dashboard.page-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: var(--cx-bg);
+}
+
+.cortex-dashboard .content-wrap {
+  flex: 1;
+}
+
+.cortex-dashboard .cortex-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Buttons */
+.cortex-dashboard .cortex-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 38px;
+  padding: 0 16px;
+  border: 1px solid var(--cx-primary);
+  border-radius: var(--cx-radius-sm);
+  background: var(--cx-primary);
+  color: #fff;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cortex-dashboard .cortex-button:hover:not(:disabled) {
+  background: var(--cx-primary-hover);
+  border-color: var(--cx-primary-hover);
+}
+
+.cortex-dashboard .cortex-button:focus-visible {
+  outline: none;
+  box-shadow: var(--cx-focus-ring);
+}
+
+.cortex-dashboard .cortex-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.cortex-dashboard .cortex-button-secondary {
+  background: var(--cx-surface);
+  border-color: var(--cx-border-strong);
+  color: var(--cx-text);
+}
+
+.cortex-dashboard .cortex-button-secondary:hover:not(:disabled) {
+  background: var(--cx-surface-muted);
+  border-color: var(--cx-text-subtle);
+}
+
+.cortex-dashboard .cortex-button-ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--cx-text-muted);
+}
+
+.cortex-dashboard .cortex-button-ghost:hover:not(:disabled) {
+  background: var(--cx-surface-muted);
+  border-color: transparent;
+  color: var(--cx-danger);
+}
+
+/* Top bar: brand on the left, account and billing on the right */
+.cortex-dashboard .cortex-topbar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 12px 24px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: saturate(180%) blur(8px);
+  border-bottom: 1px solid var(--cx-border);
+}
+
+.cortex-dashboard .cortex-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.cortex-dashboard .cortex-brand-logo {
+  width: 28px;
+  height: 28px;
+}
+
+.cortex-dashboard .cortex-brand h1 {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--cx-text);
+}
+
+.cortex-dashboard .cortex-brand-tagline {
+  padding-left: 10px;
+  border-left: 1px solid var(--cx-border);
+  color: var(--cx-text-muted);
+  font-size: 0.9rem;
+  white-space: nowrap;
+}
+
+.cortex-dashboard .cortex-account {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.cortex-dashboard .cortex-username {
+  margin-right: 4px;
+  overflow: hidden;
+  color: var(--cx-text-muted);
+  font-size: 0.9rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* Alerts */
+.cortex-dashboard .cortex-alert {
+  margin: 0;
+  padding: 10px 14px;
+  border: 1px solid rgba(194, 58, 43, 0.25);
+  border-radius: var(--cx-radius-sm);
+  background: var(--cx-danger-bg);
+  color: var(--cx-danger);
+  font-size: 0.9rem;
+}
+
+/* Filter panel */
+.cortex-dashboard .cortex-filters {
+  padding: 20px;
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  background: var(--cx-surface);
+  box-shadow: var(--cx-shadow-sm);
+}
+
+.cortex-dashboard .cortex-filters-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 16px;
+  margin-bottom: 16px;
+}
+
+/* Filters / Advanced tabs */
+.cortex-dashboard .cortex-tabs {
+  display: flex;
+  gap: 4px;
+}
+
+.cortex-dashboard .cortex-tabs button {
+  padding: 6px 12px;
+  border: none;
+  border-radius: var(--cx-radius-sm);
+  background: transparent;
+  color: var(--cx-text-muted);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cortex-dashboard .cortex-tabs button:hover {
+  color: var(--cx-text);
+}
+
+.cortex-dashboard .cortex-tabs button.is-active {
+  background: var(--cx-surface-muted);
+  color: var(--cx-text);
+}
+
+.cortex-dashboard .cortex-tabs button:focus-visible {
+  outline: none;
+  box-shadow: var(--cx-focus-ring);
+}
+
+.cortex-dashboard .cortex-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.cortex-dashboard .cortex-scope {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cortex-dashboard .cortex-scope li {
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--cx-surface-muted);
+  color: var(--cx-text-muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+}
+
+/* Options for the included classes, under the chips */
+.cortex-dashboard .cortex-class-options {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 12px 16px;
+  margin-top: 14px;
+  padding: 12px 14px;
+  border-radius: var(--cx-radius-sm);
+  background: var(--cx-surface-muted);
+  transition: opacity 0.15s ease;
+}
+
+.cortex-dashboard .cortex-class-options.is-disabled {
+  opacity: 0.55;
+}
+
+.cortex-dashboard .cortex-class-options > .cortex-hint {
+  align-self: center;
+}
+
+.cortex-dashboard .cortex-class-options .cortex-field {
+  width: 170px;
+}
+
+.cortex-dashboard .cortex-class-options .cortex-input-unit .cortex-input {
+  padding-right: 86px;
+}
+
+.cortex-dashboard .cortex-check {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 40px;
+  color: var(--cx-text);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+
+.cortex-dashboard .cortex-check input {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--cx-primary);
+}
+
+.cortex-dashboard .cortex-input:disabled {
+  background: var(--cx-surface-muted);
+  cursor: not-allowed;
+}
+
+/* Advanced: the filter as JSON */
+.cortex-dashboard .cortex-advanced {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.cortex-dashboard .cortex-advanced-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 8px;
+}
+
+.cortex-dashboard .cortex-preset {
+  padding: 4px 10px;
+  border: 1px solid var(--cx-border-strong);
+  border-radius: 999px;
+  background: var(--cx-surface);
+  color: var(--cx-text);
+  font: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.cortex-dashboard .cortex-preset:hover {
+  border-color: var(--cx-text-subtle);
+  background: var(--cx-surface-muted);
+}
+
+.cortex-dashboard .cortex-preset:focus-visible {
+  outline: none;
+  box-shadow: var(--cx-focus-ring);
+}
+
+.cortex-dashboard .cortex-code {
+  height: auto;
+  min-height: 220px;
+  padding: 12px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  resize: vertical;
+}
+
+.cortex-dashboard .cortex-json-status {
+  margin: 0;
+  font-size: 0.8rem;
+}
+
+.cortex-dashboard .cortex-json-status.is-ok {
+  color: var(--cx-good);
+}
+
+.cortex-dashboard .cortex-json-status.is-error {
+  color: var(--cx-danger);
+}
+
+.cortex-dashboard .cortex-reference {
+  color: var(--cx-text-muted);
+  font-size: 0.85rem;
+}
+
+.cortex-dashboard .cortex-reference summary {
+  color: var(--cx-accent);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cortex-dashboard .cortex-reference dl {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 3fr);
+  gap: 8px 16px;
+  margin: 10px 0 0;
+}
+
+.cortex-dashboard .cortex-reference dd {
+  margin: 0;
+}
+
+.cortex-dashboard .cortex-reference code {
+  padding: 1px 4px;
+  border-radius: 4px;
+  background: var(--cx-surface-muted);
+  color: var(--cx-text);
+  font-size: 0.8rem;
+}
+
+/* Classes: one chip per class that cycles any -> included -> excluded */
+.cortex-dashboard .cortex-classes {
+  margin-bottom: 20px;
+}
+
+.cortex-dashboard .cortex-classes-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-bottom: 10px;
+}
+
+.cortex-dashboard .cortex-classes-label {
+  color: var(--cx-text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.cortex-dashboard .cortex-hint {
+  color: var(--cx-text-subtle);
+  font-size: 0.78rem;
+}
+
+.cortex-dashboard .cortex-classes-tools {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-left: auto;
+}
+
+.cortex-dashboard .cortex-segmented {
+  display: inline-flex;
+  padding: 2px;
+  border-radius: var(--cx-radius-sm);
+  background: var(--cx-surface-muted);
+}
+
+.cortex-dashboard .cortex-segmented label {
+  position: relative;
+  padding: 4px 10px;
+  border-radius: 6px;
+  color: var(--cx-text-muted);
+  font-size: 0.8rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.cortex-dashboard .cortex-segmented label.is-active {
+  background: var(--cx-surface);
+  color: var(--cx-text);
+  box-shadow: var(--cx-shadow-sm);
+}
+
+.cortex-dashboard .cortex-segmented label:focus-within {
+  box-shadow: var(--cx-focus-ring);
+}
+
+.cortex-dashboard .cortex-segmented input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.cortex-dashboard .cortex-link-button {
+  padding: 0;
+  border: none;
+  background: none;
+  color: var(--cx-accent);
+  font: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.cortex-dashboard .cortex-link-button:disabled {
+  color: var(--cx-text-subtle);
+  cursor: default;
+}
+
+.cortex-dashboard .cortex-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cortex-dashboard .cortex-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 32px;
+  padding: 0 12px 0 8px;
+  border: 1px solid var(--cx-border-strong);
+  border-radius: 999px;
+  background: var(--cx-surface);
+  color: var(--cx-text);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.cortex-dashboard .cortex-chip:hover {
+  border-color: var(--cx-text-subtle);
+}
+
+.cortex-dashboard .cortex-chip:focus-visible {
+  outline: none;
+  box-shadow: var(--cx-focus-ring);
+}
+
+.cortex-dashboard .cortex-chip-mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 0;
+  overflow: hidden;
+  font-size: 0.75rem;
+  font-weight: 700;
+  transition: width 0.15s ease;
+}
+
+.cortex-dashboard .cortex-chip.is-included {
+  border-color: var(--cx-good);
+  background: var(--cx-good-bg);
+  color: var(--cx-good);
+  font-weight: 600;
+}
+
+.cortex-dashboard .cortex-chip.is-excluded {
+  border-color: var(--cx-poor);
+  background: var(--cx-poor-bg);
+  color: var(--cx-poor);
+  font-weight: 600;
+  text-decoration: line-through;
+}
+
+.cortex-dashboard .cortex-chip.is-included .cortex-chip-mark,
+.cortex-dashboard .cortex-chip.is-excluded .cortex-chip-mark {
+  width: 12px;
+}
+
+.cortex-dashboard .cortex-filters-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.cortex-dashboard .cortex-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.cortex-dashboard .cortex-field-wide {
+  grid-column: span 2;
+}
+
+.cortex-dashboard .cortex-field > label {
+  color: var(--cx-text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.cortex-dashboard .cortex-input {
+  width: 100%;
+  height: 40px;
+  padding: 0 10px;
+  border: 1px solid var(--cx-border-strong);
+  border-radius: var(--cx-radius-sm);
+  background: var(--cx-surface);
+  color: var(--cx-text);
+  font: inherit;
+  font-size: 0.95rem;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.cortex-dashboard .cortex-input:hover {
+  border-color: var(--cx-text-subtle);
+}
+
+.cortex-dashboard .cortex-input:focus {
+  border-color: var(--cx-accent);
+  outline: none;
+  box-shadow: var(--cx-focus-ring);
+}
+
+.cortex-dashboard .cortex-input:invalid {
+  border-color: var(--cx-danger);
+}
+
+/* A number field with its unit (px, %) inside the right edge */
+.cortex-dashboard .cortex-input-unit {
+  position: relative;
+}
+
+.cortex-dashboard .cortex-input-unit .cortex-input {
+  padding-right: 34px;
+}
+
+.cortex-dashboard .cortex-input-unit span {
+  position: absolute;
+  top: 50%;
+  right: 12px;
+  transform: translateY(-50%);
+  color: var(--cx-text-subtle);
+  font-size: 0.85rem;
+  pointer-events: none;
+}
+
+/* Label quality: slider and number field side by side */
+.cortex-dashboard .cortex-quality {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  height: 40px;
+}
+
+.cortex-dashboard .cortex-quality-number {
+  flex: none;
+  width: 96px;
+}
+
+.cortex-dashboard .cortex-range {
+  flex: 1;
+  min-width: 0;
+  height: 6px;
+  margin: 0;
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--cx-primary) 0 var(--cx-range-fill, 50%),
+    var(--cx-border) var(--cx-range-fill, 50%) 100%
+  );
+  cursor: pointer;
+  appearance: none;
+}
+
+.cortex-dashboard .cortex-range:focus-visible {
+  outline: none;
+  box-shadow: var(--cx-focus-ring);
+}
+
+.cortex-dashboard .cortex-range::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--cx-primary);
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: var(--cx-shadow-sm);
+  appearance: none;
+}
+
+.cortex-dashboard .cortex-range::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--cx-primary);
+  border-radius: 50%;
+  background: #fff;
+}
+
+.cortex-dashboard .cortex-filters-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--cx-border);
+}
+
+.cortex-dashboard .cortex-sort {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-right: auto;
+}
+
+.cortex-dashboard .cortex-sort label {
+  color: var(--cx-text-muted);
+  font-size: 0.8rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.cortex-dashboard .cortex-sort .cortex-input {
+  width: auto;
+  height: 38px;
+  padding-right: 28px;
+  cursor: pointer;
+}
+
+/* Results */
+.cortex-dashboard .cortex-results-count {
+  margin: 0;
+  color: var(--cx-text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.cortex-dashboard .cortex-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.cortex-dashboard .cortex-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--cx-border);
+  border-radius: var(--cx-radius);
+  background: var(--cx-surface);
+  box-shadow: var(--cx-shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.cortex-dashboard .cortex-card:hover {
+  box-shadow: var(--cx-shadow-md);
+  transform: translateY(-2px);
+}
+
+/* Square image area; the image and its boxes are laid out inside it together. */
+.cortex-dashboard .cortex-image-wrapper {
+  position: relative;
+  width: 100%;
+  padding-top: 100%;
+  overflow: hidden;
+  background: var(--cx-surface-muted);
+}
+
+.cortex-dashboard .cortex-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.cortex-dashboard .cortex-image-missing {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  margin: 0;
+  transform: translateY(-50%);
+  text-align: center;
+  color: var(--cx-text-subtle);
+  font-size: 0.9rem;
+}
+
+.cortex-dashboard .bounding-box {
+  position: absolute;
+  border-radius: 2px;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.35);
+  pointer-events: none;
+}
+
+.cortex-dashboard .bounding-label {
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  padding: 1px 5px;
+  border-radius: 2px 2px 2px 0;
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 16px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.cortex-dashboard .cortex-card-body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 10px;
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--cx-border);
+}
+
+.cortex-dashboard .cortex-card-classes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cortex-dashboard .cortex-card-classes li {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 2px 8px;
+  border: 1px solid var(--cx-border);
+  border-radius: 999px;
+  color: var(--cx-text);
+  font-size: 0.78rem;
+}
+
+.cortex-dashboard .cortex-class-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+}
+
+.cortex-dashboard .cortex-card-quality {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: auto 0 0;
+  color: var(--cx-text-muted);
+  font-size: 0.8rem;
+}
+
+.cortex-dashboard .cortex-quality-badge {
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.cortex-dashboard .cortex-quality-good {
+  background: var(--cx-good-bg);
+  color: var(--cx-good);
+}
+
+.cortex-dashboard .cortex-quality-fair {
+  background: var(--cx-fair-bg);
+  color: var(--cx-fair);
+}
+
+.cortex-dashboard .cortex-quality-poor {
+  background: var(--cx-poor-bg);
+  color: var(--cx-poor);
+}
+
+.cortex-dashboard .cortex-quality-none {
+  background: var(--cx-surface-muted);
+  color: var(--cx-text-subtle);
+}
+
+/* Pagination */
+.cortex-dashboard .pagination-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 0 16px;
+}
+
+.cortex-dashboard .pagination-info {
+  color: var(--cx-text-muted);
+  font-size: 0.9rem;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Empty and subscription states */
+.cortex-dashboard .cortex-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  padding: 56px 24px;
+  border: 1px dashed var(--cx-border-strong);
+  border-radius: var(--cx-radius);
+  color: var(--cx-text-muted);
+  text-align: center;
+}
+
+.cortex-dashboard .cortex-empty p {
+  margin: 0;
+}
+
+.cortex-dashboard .cortex-paywall {
+  border-style: solid;
+  background: var(--cx-surface);
+}
+
+.cortex-dashboard .cortex-paywall h2 {
+  margin: 0;
+  color: var(--cx-text);
+  font-size: 1.2rem;
+}
+
+/* Tablet */
+@media (max-width: 1000px) {
+  .cortex-dashboard .cortex-filters-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .cortex-dashboard .cortex-brand-tagline {
+    display: none;
+  }
+}
+
+/* Phone */
+@media (max-width: 640px) {
+  .cortex-dashboard .cortex-container {
+    padding: 16px;
+  }
+
+  .cortex-dashboard .cortex-topbar {
+    padding: 10px 16px;
+  }
+
+  .cortex-dashboard .cortex-username {
+    display: none;
+  }
+
+  .cortex-dashboard .cortex-filters-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cortex-dashboard .cortex-field-wide {
+    grid-column: auto;
+  }
+
+  .cortex-dashboard .cortex-filters-actions {
+    flex-wrap: wrap;
+  }
+
+  .cortex-dashboard .cortex-sort {
+    flex-basis: 100%;
+  }
+
+  .cortex-dashboard .cortex-sort .cortex-input {
+    flex: 1;
+  }
+
+  .cortex-dashboard .cortex-filters-actions .cortex-button {
+    flex: 1;
+  }
+
+  .cortex-dashboard .cortex-classes-tools {
+    margin-left: 0;
+  }
+
+  .cortex-dashboard .cortex-class-options .cortex-field {
+    width: 100%;
+  }
+
+  .cortex-dashboard .cortex-reference dl {
+    grid-template-columns: 1fr;
+  }
+}

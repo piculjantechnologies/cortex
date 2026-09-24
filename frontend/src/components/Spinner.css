@@ -1,0 +1,20 @@
+.cortex-spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50px;
+}
+
+.cortex-spinner .spinner {
+  border: 3px solid var(--cx-border, #e3e6eb);
+  border-radius: 50%;
+  border-top: 3px solid var(--cx-primary, #14171f);
+  width: 32px;
+  height: 32px;
+  animation: cortex-spin 0.8s linear infinite;
+}
+
+@keyframes cortex-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

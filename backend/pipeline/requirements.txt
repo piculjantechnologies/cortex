@@ -1,0 +1,27 @@
+# Offline pipeline only (python -m pipeline.<module>); the web app does not need these.
+# Install from backend/: pip install -r pipeline/requirements.txt
+# The torch wheels on PyPI are the default CUDA build (CUDA 13.0 on Linux for
+# torch 2.14: NVIDIA driver 580+, GPU compute capability 7.5+); for another
+# build (cu126 for older GPUs, or CPU) use the matching index URL from
+# pytorch.org with the same versions.
+# pymongo, requests and url-normalize must stay equal to the pins in backend/requirements.txt.
+
+# detect_objects needs torchvision's decode_image(..., apply_exif_orientation=True);
+# these are the versions the pipeline tests run on. torchvision 0.29 deprecates
+# its image decoders in favour of TorchCodec but still ships them.
+torch==2.14.0
+torchvision==0.29.0
+# detect_objects reads image headers with Pillow (also a torchvision dependency).
+pillow==12.3.0
+
+numpy==2.1.1
+opencv-python-headless==4.10.0.84
+pymongo==4.10.1
+requests==2.34.2
+# http.py reads bodies with HTTPResponse.read1() and extends urllib3's
+# connection classes; 2.6+ also bounds decompression per read.
+urllib3==2.8.0
+azure-storage-blob==12.30.3
+beautifulsoup4==4.15.0
+url-normalize==1.4.3
+filetype==1.2.0

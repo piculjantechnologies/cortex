@@ -1,0 +1,125 @@
+Cortex
+Copyright 2026 Neven Pičuljan
+
+This program is free software: you can redistribute it and/or modify it
+under the terms of the GNU Affero General Public License as published by
+the Free Software Foundation, version 3 only
+(SPDX-License-Identifier: AGPL-3.0-only).
+
+This program is distributed in the hope that it will be useful, but
+WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Affero
+General Public License in the LICENSE file for more details.
+
+
+Scope
+-----
+
+The licence covers all source code in this repository (backend/,
+frontend/ and extension/). The label-quality checkpoints are not part of this
+repository; the scoring stage downloads the selected one from the
+label-quality-assurance release (see below). The licence covers the software
+only, not the data produced by running it (collected URLs, detections,
+label-quality scores).
+
+
+Label quality assurance method
+------------------------------
+
+The label-quality networks and preprocessing in backend/pipeline/labelqa/
+(the unified/, thesis/ and paper/ subpackages) score annotations with the
+label quality assurance method. They are copied from the unified/, thesis/
+and paper/ folders of the label-quality-assurance repository at commit
+07f31da, the maintained implementation of that method with its released
+checkpoints and references to its publications:
+
+    https://github.com/piculjantechnologies/label-quality-assurance
+
+The scoring stage downloads the checkpoint that LABELQA_MODEL selects from
+the checkpoints released there (unified, the default; thesis; paper):
+
+    https://labelqa.blob.core.windows.net/checkpoints/v1.0/unified__artifacts_voc__best_ema_calibrated.pth
+    https://labelqa.blob.core.windows.net/checkpoints/v1.0/thesis__artifacts__best_model_refit.pth
+    https://labelqa.blob.core.windows.net/checkpoints/v1.0/paper__artifacts__best_model_refit.pth
+
+That repository, the copied code and the checkpoints are the same author's
+work and are licensed AGPL-3.0-only, like Cortex. The checkpoints are
+subject to the torchvision BSD 3-Clause notice below, which applies to the
+torchvision-derived tensors they contain. See
+backend/pipeline/labelqa/MODEL.md.
+
+
+Third-party components
+----------------------
+
+torchvision
+    The pipeline uses torchvision model definitions and pretrained
+    weights:
+    - Object detection runs SSDlite320-MobileNetV3-Large with torchvision's
+      COCO-pretrained weights (SSDLite320_MobileNet_V3_Large_Weights),
+      which torchvision downloads at run time; they are not redistributed
+      here.
+    - The label-quality networks are built from torchvision's ResNet-18
+      and ResNet-50. Each checkpoint that the scoring stage can download
+      has an image trunk that was initialised from torchvision's
+      ImageNet-pretrained weights:
+      - unified: a ResNet-50 (IMAGENET1K_V2) frozen through layer2 (the
+        pretrained parameters, up to weight-EMA floating-point rounding, at
+        most 6e-3 absolute), its later stages fine-tuned, so their weights
+        are derived from, not copies of, the torchvision parameters;
+      - thesis and paper: a ResNet-18 (IMAGENET1K_V1) through layer4,
+        fine-tuned, so its weights are derived from, not copies of, the
+        torchvision parameters; its BatchNorm running statistics equal the
+        pretrained ones up to floating-point rounding (at most 2e-4
+        absolute).
+      These tensors are subject to the licence below.
+    torchvision states that its pretrained models may carry additional
+    terms derived from the datasets they were trained on (ImageNet, COCO).
+
+    Copyright (c) Soumith Chintala 2016, All rights reserved.
+    Licensed under the BSD 3-Clause License.
+
+    Redistribution and use in source and binary forms, with or without
+    modification, are permitted provided that the following conditions
+    are met:
+
+    1. Redistributions of source code must retain the above copyright
+       notice, this list of conditions and the following disclaimer.
+    2. Redistributions in binary form must reproduce the above copyright
+       notice, this list of conditions and the following disclaimer in the
+       documentation and/or other materials provided with the distribution.
+    3. Neither the name of the copyright holder nor the names of its
+       contributors may be used to endorse or promote products derived from
+       this software without specific prior written permission.
+
+    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+    "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+    LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+    PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+    HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+    SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+    TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+    PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+    LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+    NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
+Common Crawl
+    The pipeline reads the Common Crawl URL index (data.commoncrawl.org)
+    to find web pages and collects the image URLs they reference. Use of
+    Common Crawl data is subject to the Common Crawl Terms of Use:
+    https://commoncrawl.org/terms-of-use
+    Images at the harvested URLs remain the property of their respective
+    rights holders; neither this repository nor its licence grants any
+    rights to them.
+
+Frontend dependencies
+    The npm packages declared in frontend/package.json (resolved in
+    frontend/package-lock.json) are not part of this repository. Each is
+    distributed under its own licence, stated in the package itself; a
+    production build bundles their code under those licences.
+
+Backend dependencies
+    The Python packages listed in the backend requirements files are
+    likewise not part of this repository and are distributed under their
+    own licences.

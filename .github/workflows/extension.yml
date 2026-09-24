@@ -1,0 +1,44 @@
+name: Extension
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "extension/**"
+      - "frontend/src/constants/vocClasses.js"
+      - ".github/workflows/extension.yml"
+  pull_request:
+    paths:
+      - "extension/**"
+      - "frontend/src/constants/vocClasses.js"
+      - ".github/workflows/extension.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: frontend/.nvmrc
+
+      - name: Check syntax
+        run: for f in extension/*.js extension/lib/*.js; do node --check "$f"; done
+
+      - name: Validate the manifest
+        run: node -e "JSON.parse(require('fs').readFileSync('extension/manifest.json', 'utf8'))"
+
+      - name: Test
+        run: node --test extension/test/*.test.js
